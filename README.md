@@ -9,7 +9,7 @@ Gil is a mix custom task for checking exchange rate.
 * mix.exs
 ```elixir
 def deps do
-  [{:gil, "~> 0.0.1"}]
+  [{:gil, "~> 0.0.2"}]
 end
 ```
 
