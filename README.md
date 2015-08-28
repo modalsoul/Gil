@@ -15,7 +15,16 @@ end
 
 ## Usage
 
+Get USD/EUR rate.
+
 ```elixir
 > mix gil USD EUR
+USD/EUR: 0.8850
+```
+
+Use USD as a key currency.
+
+```elixir
+> mix gil EUR
 USD/EUR: 0.8850
 ```
