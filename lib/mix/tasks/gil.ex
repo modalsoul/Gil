@@ -35,7 +35,7 @@ defmodule Mix.Tasks.Gil do
   end
 
   def get_rate(currency_a, currency_b) do
-    url = "http://jp.investing.com/currencies/#{String.downcase(currency_a)}-#{String.downcase(currency_b)}"
+    url = "http://jp.investing.com/currencies/#{String.downcase(currency_a <> "-" <> currency_b)}"
     HTTPoison.start
     HTTPoison.get(url)
   end
