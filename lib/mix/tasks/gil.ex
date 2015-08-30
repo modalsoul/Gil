@@ -6,23 +6,15 @@ defmodule Mix.Tasks.Gil do
   def run(args) do
     result = case currencies(args) do
       {:ok, {currency_a, currency_b}} ->
-        case get_rate(currency_a, currency_b) do
-          {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-            try do
-              "#{String.upcase(currency_a)}/#{String.upcase(currency_b)}: #{rate(body)}"
-            rescue
-              e in RuntimeError -> e.message
-            end
-          {:ok, %HTTPoison.Response{status_code: 404}} ->
-            "Failed to get currency rate."
-          {:error, %HTTPoison.Error{reason: reason}} ->
-            "ERROR! #{reason}"
+        case parse_response(get_rate(currency_a, currency_b)) do
+          {:ok, rate} ->
+            "#{String.upcase(currency_a)}/#{String.upcase(currency_b)}: #{rate}"
+          {:error, message} ->
+            message
         end
       {:error} -> "Illegal argument"
     end
-
     IO.puts result
-
   end
 
   def currencies(args) do
@@ -38,6 +30,21 @@ defmodule Mix.Tasks.Gil do
     url = "http://jp.investing.com/currencies/#{String.downcase(currency_a <> "-" <> currency_b)}"
     HTTPoison.start
     HTTPoison.get(url)
+  end
+
+  def parse_response(response) do
+    case response do
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+        try do
+          {:ok, rate(body)}
+        rescue
+          e in RuntimeError -> {:error, e.message}
+        end
+      {:ok, %HTTPoison.Response{status_code: 404}} ->
+        {:error, "Failed to get currency rate."}
+      {:error, %HTTPoison.Error{reason: reason}} ->
+        {:error, "ERROR! #{reason}"}
+    end
   end
 
   def rate(body) do
