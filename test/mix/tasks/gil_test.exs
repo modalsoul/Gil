@@ -62,4 +62,7 @@ defmodule Mix.Tasks.GilTest do
     assert parsed == {:error, "ERROR! something wrong"}
   end
 
+  test "Gil#key_currency success" do
+    assert Mix.Tasks.Gil.key_currency == "usd"
+  end
 end

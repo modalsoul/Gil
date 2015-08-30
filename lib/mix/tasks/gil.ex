@@ -18,10 +18,12 @@ defmodule Mix.Tasks.Gil do
   end
 
   def currencies(args) do
+    kc = key_currency
     case args do
       [a|[b|_]] -> {:ok, {a, b}}
-      ["usd"|_] -> {:error}
-      [a|_] -> {:ok, {"usd", a}}
+      [a|[a|_]] -> {:error}
+      [^kc|_] -> {:error}
+      [a|_] -> {:ok, {kc, a}}
       _ -> {:error}
     end
   end
@@ -51,6 +53,14 @@ defmodule Mix.Tasks.Gil do
     case Floki.find(body, "#last_last") do
       {_, _, [rate|_]} -> rate
       _ -> raise "Failed to get currency rate."
+    end
+  end
+
+  def key_currency do
+    conf = Mix.Config.read!("config/config.exs")
+    case conf[:gil][:key_currency] do
+      nil -> "usd"
+      key -> key
     end
   end
 end

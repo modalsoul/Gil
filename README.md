@@ -23,7 +23,20 @@ Get USD/EUR rate.
 USD/EUR: 0.8850
 ```
 
-Use USD as a key currency.
+Set key currency.
+
+* config/config.exs
+```elixir
+config :gil,
+  key_currency: "eur"
+```
+
+```elixir
+> mix gil USD
+EUR/USD: 1.1187
+```
+
+Default key currency is USD.
 
 ```elixir
 > mix gil EUR
