@@ -29,3 +29,9 @@ Use USD as a key currency.
 > mix gil EUR
 USD/EUR: 0.8850
 ```
+
+## License
+
+Copyright (C) 2015 Masatoshi Imae([@modal_soul](http://twitter.com/modal_soul))
+
+Distributed under the MIT License.
